@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  api:
+    image: geoname-api
+    build: ./.docker
+      # context: .
+      # dockerfile: Dockerfile
+    container_name: geoname-api
+    command: bash -c "yarn && yarn start"
+    restart: always
+    volumes:
+      - .:/var/www/html
+    working_dir: '/var/www/html'
+    ports:
+      - '7000:7000'
+    # networks:
+      # geoname-network:
+      #   ipv4_address: 1.0.0.2
+
+  postgres:
+    image: postgres:13.1-alpine
+    container_name: postgresdb
+    restart: always
+    environment:
+      POSTGRES_USER: process.env.DB_USER
+      POSTGRES_PASSWORD: process.env.DB_PASSWORD
+      POSTGRES_DB: process.env.DB_DATABASE
+    #   PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - ./volumes/postgresdb:/data/db
+    # networks:
+      # geoname-network:
+      #   ipv4_address: 1.0.0.3
+
+# networks:
+#   geoname-network:
+#     driver: bridge
+#     ipam:
+#       config:
+#         - subnet: 1.0.0.0/24
