@@ -1,41 +1,78 @@
-version: '3'
+# version: '3'
+
+# services:
+#   api:
+#     image: geoname-api
+#     build: ./.docker
+#     container_name: geoname-api
+#     command: bash -c "yarn && yarn start"
+#     restart: always
+#     volumes:
+#       - .:/var/www/html
+#     working_dir: '/var/www/html'
+#     ports:
+#       - '7000:7000'
+#     environment:
+#         SEQ_DB: geoname
+#         SEQ_USER: username
+#         SEQ_PW: pgpassword
+#         PORT: 4242
+#         # DATABASE_URL: postgres://username:pgpassword@127.0.0.1:5432/mydatabase
+#         DATABASE_URL: "postgres://username:pgpassword@postgres:5432/geoname"
+
+#   postgres:
+#     image: postgres:13.1-alpine
+#     container_name: postgresdb
+#     restart: always
+#     # env_file:
+#     #   - .env
+#     environment:
+#       POSTGRES_USER: username
+#       POSTGRES_PASSWORD: pgpassword
+#       POSTGRES_DB: geoname
+#     #   PGDATA: /var/lib/postgresql/data/pgdata
+#     # volumes:
+#     #   - ./volumes/postgresdb:/data/db
+#     # networks:
+#     #   geoname-network:
+#     #     ipv4_address: 1.0.0.3
+
+# # networks:
+# #   geoname-network:
+# #     driver: bridge
+# #     external: false
+# #     ipam:
+# #       config:
+# #         - subnet: 1.0.0.0/24
+
+version: '3.1'
 
 services:
-  api:
-    image: geoname-api
-    build: ./.docker
-      # context: .
-      # dockerfile: Dockerfile
-    container_name: geoname-api
-    command: bash -c "yarn && yarn start"
-    restart: always
-    volumes:
-      - .:/var/www/html
-    working_dir: '/var/www/html'
-    ports:
-      - '7000:7000'
-    # networks:
-      # geoname-network:
-      #   ipv4_address: 1.0.0.2
+  # api:
+  #   image: geoname-api
+  #   build: ./.docker
+  #   container_name: geoname-api
+  #   command: bash -c "yarn && yarn start"
+  #   restart: always
+  #   volumes:
+  #   - .:/var/www/html
+  #   working_dir: '/var/www/html'
+  #   ports:
+  #   - '7000:7000'
 
-  postgres:
+  database:
+    container_name: postgres-geoname
+    # image: postgres
     image: postgres:13.1-alpine
-    container_name: postgresdb
-    restart: always
+    ports:
+      - "5432:5432"
     environment:
-      POSTGRES_USER: process.env.DB_USER
-      POSTGRES_PASSWORD: process.env.DB_PASSWORD
-      POSTGRES_DB: process.env.DB_DATABASE
-    #   PGDATA: /var/lib/postgresql/data/pgdata
-    volumes:
-      - ./volumes/postgresdb:/data/db
-    # networks:
-      # geoname-network:
-      #   ipv4_address: 1.0.0.3
+      POSTGRES_DB: geoname
+      POSTGRES_USER: Jeyson
+      POSTGRES_PASSWORD: jlr252525
 
-# networks:
-#   geoname-network:
-#     driver: bridge
-#     ipam:
-#       config:
-#         - subnet: 1.0.0.0/24
+
+
+# use docker-compose up -d
+# caso não funcionar utilize o comando abaixo
+# docker run --name gostack_postgres -e POSTGRES_PASSWORD=docker POSTGRES_DB=gostack_gobarber -p 5432:5432 -d postgres
