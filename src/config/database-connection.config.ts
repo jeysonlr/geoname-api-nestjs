@@ -1,6 +1,6 @@
+import { DatabaseType } from "typeorm";
 import { Injectable } from "@nestjs/common";
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
-import { DatabaseType } from "typeorm";
 
 type PostgresType = 'postgres';
 
@@ -16,6 +16,16 @@ export class DatabaseTypeOrmConfig implements TypeOrmOptionsFactory {
             database: process.env.DB_DATABASE,
             entities: [__dirname + '/../**/entities/*.entity{.ts,.js}'],
             synchronize: false,
+
+
+            // type: 'postgres',//process.env.DB_TYPE as (DatabaseType & PostgresType),
+            // host: 'localhost',//process.env.DB_HOST,
+            // port: 5432,//parseInt(process.env.DB_PORT, 10),
+            // username: 'Jeyson',
+            // password: 'jlr252525',
+            // database: 'geoname',//process.env.DB_DATABASE,
+            // entities: [__dirname + '/../**/entities/*.entity{.ts,.js}'],
+            // synchronize: false,
         };
     }
 }

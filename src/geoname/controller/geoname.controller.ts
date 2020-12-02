@@ -9,5 +9,6 @@ export class GeonameController {
     @Get('/')
     async getAll() {
         await console.log('ola, rodou!')
+        return 'olá'
     }
 }
