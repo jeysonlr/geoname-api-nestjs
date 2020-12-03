@@ -1,13 +1,20 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { GeonameController } from './controller/geoname.controller';
+import { GeonameStateService } from './services';
+import { GeonameStateRepository } from './repositories';
+import { StringFormatterHelper } from './../shared/helper';
+import { GeonameController } from './controllers/geoname.controller';
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([ ], 'sabiumConnection'),
+        TypeOrmModule.forFeature([GeonameStateRepository], 'databaseConnection'),
+    ],
+    providers: [
+        StringFormatterHelper,
+        GeonameStateService
     ],
     controllers: [
         GeonameController
-    ]
+    ],
 })
 export class GeonameModule { }

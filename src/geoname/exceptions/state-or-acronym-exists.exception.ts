@@ -1,3 +1,3 @@
-import { ConflictException } from "src/shared/exceptions";
+import { ConflictException } from "./../../shared/exceptions";
 
 export class StateOrAcronymExistsException extends ConflictException { }

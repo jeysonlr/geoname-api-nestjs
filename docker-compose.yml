@@ -1,78 +1,44 @@
-# version: '3'
+version: '3'
 
-# services:
+services:
+###################################################################
+#                                                                 #
+# DESCOMENTAR APENAS SE QUISER UTILIZAR O DOCKER PARA RODAR A API #
+#                                                                 #
+###################################################################
+
 #   api:
 #     image: geoname-api
 #     build: ./.docker
 #     container_name: geoname-api
-#     command: bash -c "yarn && yarn start"
+#     command: bash -c "yarn && yarn run start:dev"
 #     restart: always
 #     volumes:
-#       - .:/var/www/html
+#     - .:/var/www/html
 #     working_dir: '/var/www/html'
 #     ports:
-#       - '7000:7000'
-#     environment:
-#         SEQ_DB: geoname
-#         SEQ_USER: username
-#         SEQ_PW: pgpassword
-#         PORT: 4242
-#         # DATABASE_URL: postgres://username:pgpassword@127.0.0.1:5432/mydatabase
-#         DATABASE_URL: "postgres://username:pgpassword@postgres:5432/geoname"
+#     - '7001:7001'
 
-#   postgres:
-#     image: postgres:13.1-alpine
-#     container_name: postgresdb
-#     restart: always
-#     # env_file:
-#     #   - .env
-#     environment:
-#       POSTGRES_USER: username
-#       POSTGRES_PASSWORD: pgpassword
-#       POSTGRES_DB: geoname
-#     #   PGDATA: /var/lib/postgresql/data/pgdata
-#     # volumes:
-#     #   - ./volumes/postgresdb:/data/db
-#     # networks:
-#     #   geoname-network:
-#     #     ipv4_address: 1.0.0.3
 
-# # networks:
-# #   geoname-network:
-# #     driver: bridge
-# #     external: false
-# #     ipam:
-# #       config:
-# #         - subnet: 1.0.0.0/24
-
-version: '3.1'
-
-services:
-  # api:
-  #   image: geoname-api
-  #   build: ./.docker
-  #   container_name: geoname-api
-  #   command: bash -c "yarn && yarn start"
-  #   restart: always
-  #   volumes:
-  #   - .:/var/www/html
-  #   working_dir: '/var/www/html'
-  #   ports:
-  #   - '7000:7000'
-
-  database:
-    container_name: postgres-geoname
-    # image: postgres
-    image: postgres:13.1-alpine
+# CONTAINER DO BANCO DE DADOS
+  pgsql:
+    image: postgres:alpine
     ports:
-      - "5432:5432"
+      - '5432:5432'
+    container_name: 'pgsql'
+    restart: always
+    volumes:
+      - pg-data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: geoname
-      POSTGRES_USER: Jeyson
-      POSTGRES_PASSWORD: jlr252525
+      POSTGRES_USER: pguser
+      POSTGRES_PASSWORD: pgpassword
 
+# CONTAINER DO SISTEMA GERENCIADOR DE BANCO DE DADOS (SGBD)
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
 
-
-# use docker-compose up -d
-# caso não funcionar utilize o comando abaixo
-# docker run --name gostack_postgres -e POSTGRES_PASSWORD=docker POSTGRES_DB=gostack_gobarber -p 5432:5432 -d postgres
+volumes:
+  pg-data:

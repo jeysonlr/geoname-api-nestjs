@@ -1,5 +1,5 @@
-import { ValidationError } from 'class-validator';
 import { forEach, map } from 'lodash';
+import { ValidationError } from 'class-validator';
 
 export interface RequestErrorInterface {
     readonly constraint: string;

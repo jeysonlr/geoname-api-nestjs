@@ -1,3 +1,3 @@
-import { InternalServerErrorException } from 'src/shared/exceptions';
+import { InternalServerErrorException } from "./../../shared/exceptions";
 
 export class StateDatabaseErrorException extends InternalServerErrorException { }

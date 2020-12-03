@@ -1,9 +1,10 @@
 import { ERROR_MESSAGES } from '../constants';
-import { GeonameStateEntity } from "../entity";
-import { CreateStateGeonameDto, UpdateStateGeonameDto } from '../dto';
+import { GeonameStateEntity } from "../entities";
 import { EntityRepository, Repository } from "typeorm";
-import { StringFormatterHelper } from './../../shared/helper';
-import { StateDatabaseErrorException, StateOrAcronymExistsException } from '../exceptions';
+import { StringFormatterHelper } from '../../shared/helper';
+import { StateDatabaseErrorException } from '../exceptions';
+import { CreateStateGeonameDto, UpdateStateGeonameDto } from '../dto';
+import GeonameStateRepositoryInterface from './geoname-state.repository.interface';
 
 /**
  * @author Jeyson Luiz Romualdo
@@ -12,7 +13,7 @@ import { StateDatabaseErrorException, StateOrAcronymExistsException } from '../e
  * @extends {Repository<GeonameStateEntity>}
  */
 @EntityRepository(GeonameStateEntity)
-export class GeonameStateRepository extends Repository<GeonameStateEntity> {
+export class GeonameStateRepository extends Repository<GeonameStateEntity> implements GeonameStateRepositoryInterface {
     constructor(
         private readonly stringFormatter: StringFormatterHelper
     ) { super() }
@@ -51,6 +52,7 @@ export class GeonameStateRepository extends Repository<GeonameStateEntity> {
         try {
             return await this.find();
         } catch (error) {
+            console.log('aqui   ' + error)
             throw new StateDatabaseErrorException(ERROR_MESSAGES.STATE_DATABASE_ERROR)
         }
     }
@@ -60,7 +62,7 @@ export class GeonameStateRepository extends Repository<GeonameStateEntity> {
      * @return {*}  {Promise<GeonameStateEntity>}
      * @memberof GeonameStateRepository
      */
-    async findById(id: number): Promise<GeonameStateEntity> {
+    async findById(id: number): Promise<GeonameStateEntity | undefined> {
         try {
             return await this.findOne(id);
         } catch (error) {
@@ -74,9 +76,9 @@ export class GeonameStateRepository extends Repository<GeonameStateEntity> {
      * @return {*}  {Promise<GeonameStateEntity[]>}
      * @memberof GeonameStateRepository
      */
-    async findByStateName(stateName: string): Promise<GeonameStateEntity[]> {
+    async findByStateName(stateName: string): Promise<GeonameStateEntity | undefined> {
         try {
-            return await this.find({ stateName });
+            return await this.findOne(stateName);
         } catch (error) {
             throw new StateDatabaseErrorException(
                 this.stringFormatter.format(ERROR_MESSAGES.STATE_DATABASE_ERROR), stateName);
@@ -88,7 +90,7 @@ export class GeonameStateRepository extends Repository<GeonameStateEntity> {
      * @return {*}  {Promise<GeonameStateEntity>}
      * @memberof GeonameStateRepository
      */
-    async findByStateAcronym(stateAcronym: string): Promise<GeonameStateEntity> {
+    async findByStateAcronym(stateAcronym: string): Promise<GeonameStateEntity | undefined> {
         try {
             return await this.findOne(stateAcronym);
         } catch (error) {
