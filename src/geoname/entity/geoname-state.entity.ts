@@ -1,23 +1,24 @@
 import { IsNotEmpty, Length } from "class-validator";
-import { Column, Entity, PrimaryColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, PrimaryColumn, Unique } from "typeorm";
 
+@Unique(['stateName', 'stateAcronym'])
 @Entity({ name: 'geoname_estados', schema: 'public' })
 export class GeonameStateEntity {
-    @PrimaryColumn({ name: 'id', type: 'integer' })
+    @PrimaryColumn({ type: 'integer' })
     _id: number;
 
     @IsNotEmpty()
-    @Column('text', { name: 'estadonome' })
+    @Column('text')
     stateName: string;
 
     @Length(2, 2)
     @IsNotEmpty()
-    @Column('text', { name: 'estadosigla' })
+    @Column('text')
     stateAcronym: string;
 
-    @Column('timestamp', { name: 'datacriacao' })
+    @CreateDateColumn('timestamp')
     createAt: Date;
 
-    @Column('timestamp', { name: 'dataatualizacao' })
+    @CreateDateColumn('timestamp')
     updateAt: Date;
 }

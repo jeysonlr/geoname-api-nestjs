@@ -1,7 +1,11 @@
 export const ERROR_MESSAGES = {
 
     STATE_DATABASE_ERROR: 'Ocorreu um erro ao consultar o(s) estado(s) "{}"!',
-    USER_NOT_FOUND_BY_ID: 'Usuário com id "{}" não encontrado.',
+    ACRONYM_DATABASE_ERROR: 'Ocorreu um erro ao consultar a sigla "{}"!',
+    ACRONYM_CONFLICT_EXISTS: 'Já existe um estado cadastrado com esta sigla "{}"!',
+    STATE_CONFLICT_EXISTS: 'Já existe um estado cadastrado com este nome "{}"!',
+    STATE_SAVE_DATABASE_ERROR: 'Ocorreu um erro ao salvar o estado!',
+    STATE_UPDATE_DATABASE_ERROR: 'Ocorreu um  erro ao atualizar o estado!',
 };
 
 export const SUCCESS_MESSAGES = {
