@@ -1,9 +1,9 @@
 import { ERROR_MESSAGES } from '../constants';
 import { GeonameStateEntity } from "../entities";
+import { CreateOrUpdateStateGeonameDto } from '../dto';
 import { EntityRepository, Repository } from "typeorm";
 import { StringFormatterHelper } from '../../shared/helper';
 import { StateDatabaseErrorException } from '../exceptions';
-import { CreateStateGeonameDto, UpdateStateGeonameDto } from '../dto';
 import GeonameStateRepositoryInterface from './geoname-state.repository.interface';
 
 /**
@@ -19,26 +19,28 @@ export class GeonameStateRepository extends Repository<GeonameStateEntity> imple
     ) { super() }
 
     /**
-     * @param {CreateStateGeonameDto} createStateDto
+     * @param {CreateOrUpdateStateGeonameDto} createOrUpdateStateDto
      * @return {*}  {Promise<GeonameStateEntity>}
      * @memberof GeonameStateRepository
      */
-    async createState(createStateDto: CreateStateGeonameDto): Promise<GeonameStateEntity> {
+    async createState(createOrUpdateStateDto: CreateOrUpdateStateGeonameDto): Promise<GeonameStateEntity> {
         try {
-            return await this.save(createStateDto);
+            return await this.save(createOrUpdateStateDto);
         } catch (error) {
-            throw new StateDatabaseErrorException(ERROR_MESSAGES.STATE_SAVE_DATABASE_ERROR)
+            throw new StateDatabaseErrorException(
+                ERROR_MESSAGES.STATE_SAVE_DATABASE_ERROR
+            )
         }
     }
 
     /**
-     * @param {UpdateStateGeonameDto} updateStateGeonameDto
+     * @param {CreateOrUpdateStateGeonameDto} createOrUpdateStateDto
      * @return {*}  {Promise<GeonameStateEntity>}
      * @memberof GeonameStateRepository
      */
-    async updateState(updateStateGeonameDto: UpdateStateGeonameDto): Promise<GeonameStateEntity> {
+    async updateState(createOrUpdateStateDto: CreateOrUpdateStateGeonameDto): Promise<GeonameStateEntity> {
         try {
-            return await this.save(updateStateGeonameDto);
+            return await this.save(createOrUpdateStateDto);
         } catch (error) {
             throw new StateDatabaseErrorException(ERROR_MESSAGES.STATE_UPDATE_DATABASE_ERROR)
         }
@@ -52,7 +54,6 @@ export class GeonameStateRepository extends Repository<GeonameStateEntity> imple
         try {
             return await this.find();
         } catch (error) {
-            console.log('aqui   ' + error)
             throw new StateDatabaseErrorException(ERROR_MESSAGES.STATE_DATABASE_ERROR)
         }
     }
@@ -67,7 +68,8 @@ export class GeonameStateRepository extends Repository<GeonameStateEntity> imple
             return await this.findOne(id);
         } catch (error) {
             throw new StateDatabaseErrorException(
-                this.stringFormatter.format(ERROR_MESSAGES.STATE_DATABASE_ERROR), id.toString())
+                this.stringFormatter.format(ERROR_MESSAGES.STATE_DATABASE_ERROR, id.toString())
+            );
         }
     }
 
@@ -78,10 +80,11 @@ export class GeonameStateRepository extends Repository<GeonameStateEntity> imple
      */
     async findByStateName(stateName: string): Promise<GeonameStateEntity | undefined> {
         try {
-            return await this.findOne(stateName);
+            return await this.findOne({ stateName: stateName });
         } catch (error) {
             throw new StateDatabaseErrorException(
-                this.stringFormatter.format(ERROR_MESSAGES.STATE_DATABASE_ERROR), stateName);
+                this.stringFormatter.format(ERROR_MESSAGES.STATE_DATABASE_ERROR, stateName)
+            );
         }
     }
 
@@ -92,10 +95,11 @@ export class GeonameStateRepository extends Repository<GeonameStateEntity> imple
      */
     async findByStateAcronym(stateAcronym: string): Promise<GeonameStateEntity | undefined> {
         try {
-            return await this.findOne(stateAcronym);
+            return await this.findOne({ stateAcronym: stateAcronym });
         } catch (error) {
             throw new StateDatabaseErrorException(
-                this.stringFormatter.format(ERROR_MESSAGES.ACRONYM_DATABASE_ERROR), stateAcronym)
+                this.stringFormatter.format(ERROR_MESSAGES.ACRONYM_DATABASE_ERROR, stateAcronym)
+            );
         }
     }
 }

@@ -1,4 +1,4 @@
-import { IsNotEmpty, Length } from "class-validator";
+import { IsNotEmpty, IsNumberString, Length } from "class-validator";
 import {
     Column,
     Unique,
@@ -6,6 +6,7 @@ import {
     PrimaryColumn,
     UpdateDateColumn,
     CreateDateColumn,
+    PrimaryGeneratedColumn,
 } from "typeorm";
 
 /**
@@ -16,16 +17,17 @@ import {
 @Entity({ name: 'geoname_estados', schema: 'public' })
 @Unique(['stateName', 'stateAcronym'])
 export class GeonameStateEntity {
-    @PrimaryColumn({ type: 'integer' })
+    @PrimaryGeneratedColumn({ name: 'id', type: 'integer' })
     id: number;
 
     @IsNotEmpty()
-    @Column('text')
+    @Column('varchar')
+    @IsNumberString()
     stateName: string;
 
     @Length(2, 2)
     @IsNotEmpty()
-    @Column('text')
+    @Column('varchar')
     stateAcronym: string;
 
     @CreateDateColumn({ type: 'timestamp' })

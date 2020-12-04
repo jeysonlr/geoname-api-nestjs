@@ -1,5 +1,5 @@
 import { GeonameStateEntity } from "../entities";
-import { CreateStateGeonameDto, UpdateStateGeonameDto } from "../dto";
+import { CreateOrUpdateStateGeonameDto } from "../dto";
 
 /**
  * @author Jeyson Luiz Romualdo
@@ -7,8 +7,8 @@ import { CreateStateGeonameDto, UpdateStateGeonameDto } from "../dto";
  * @interface GeonameStateRepositoryInterface
  */
 export default interface GeonameStateRepositoryInterface {
-    createState(createStateDto: CreateStateGeonameDto): Promise<GeonameStateEntity>;
-    updateState(updateStateGeonameDto: UpdateStateGeonameDto): Promise<GeonameStateEntity>;
+    createState(createOrUpdateStateDto: CreateOrUpdateStateGeonameDto): Promise<GeonameStateEntity>;
+    updateState(createOrUpdateStateDto: CreateOrUpdateStateGeonameDto): Promise<GeonameStateEntity>;
     findAll(): Promise<GeonameStateEntity[]>;
     findById(id: number): Promise<GeonameStateEntity | undefined>;
     findByStateName(stateName: string): Promise<GeonameStateEntity | undefined>;

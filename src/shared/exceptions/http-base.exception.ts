@@ -10,11 +10,6 @@ import { HttpInternalMessages } from '../enums';
  * @see [Base Exceptions](https://docs.nestjs.com/exception-filters#base-exceptions)
  *
  * @publicApi
-/**
- * @author Jeyson Luiz Romualdo
- * @export
- * @class HttpBaseException
- * @extends {Error}
  */
 export class HttpBaseException extends Error {
     /**

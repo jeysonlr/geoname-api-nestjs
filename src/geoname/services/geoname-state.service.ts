@@ -2,15 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { ERROR_MESSAGES } from '../constants';
 import { GeonameStateEntity } from '../entities';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CreateOrUpdateStateGeonameDto } from '../dto';
 import { GeonameStateRepository } from '../repositories';
 import { StringFormatterHelper } from './../../shared/helper';
 import {
-    CreateStateGeonameDto,
-    UpdateStateGeonameDto
-} from '../dto';
-import {
     CreateOrUpdateStateException,
-    StateOrAcronymExistsException
+    StateFindByIdNotFounException,
+    StateOrAcronymExistsException,
+    StateFindByNameNotFoundException,
+    StateFindByAcronymNotFoundException,
 } from '../exceptions';
 import { StateFindAllException } from '../exceptions/state-find-all-exception';
 import GeonameStateRepositoryInterface from '../repositories/geoname-state.repository.interface';
@@ -29,64 +29,73 @@ export class GeonameStateService {
     ) { }
 
     /**
-     * @param {CreateStateGeonameDto} createStateDto
+     * @param {CreateOrUpdateStateGeonameDto} createOrUpdateStateDto
      * @return {*}  {Promise<GeonameStateEntity>}
      * @memberof GeonameStateService
      */
-    async createState(createStateDto: CreateStateGeonameDto): Promise<GeonameStateEntity> {
-        const { stateName, stateAcronym } = createStateDto;
+    async createState(createOrUpdateStateDto: CreateOrUpdateStateGeonameDto): Promise<GeonameStateEntity> {
+        const createStateDtoToUpper = await this.transferObjectToDto(createOrUpdateStateDto);
 
-        if (await this.geonameStateRepository.findByStateName(stateName)) {
+        if (await this.geonameStateRepository.findByStateName(createStateDtoToUpper.stateName)) {
             throw new StateOrAcronymExistsException(
-                this.stringFormatter.format(ERROR_MESSAGES.STATE_CONFLICT_EXISTS), stateName
+                this.stringFormatter.format(
+                    ERROR_MESSAGES.STATE_CONFLICT_EXISTS, createStateDtoToUpper.stateName)
             );
         }
-        if (await this.geonameStateRepository.findByStateAcronym(stateAcronym)) {
+
+        if (await this.geonameStateRepository.findByStateAcronym(createStateDtoToUpper.stateAcronym)) {
             throw new StateOrAcronymExistsException(
-                this.stringFormatter.format(ERROR_MESSAGES.ACRONYM_CONFLICT_EXISTS), stateAcronym
+                this.stringFormatter.format(
+                    ERROR_MESSAGES.ACRONYM_CONFLICT_EXISTS, createStateDtoToUpper.stateAcronym)
             );
         }
 
         try {
-            return await this.geonameStateRepository.createState(createStateDto);
+            return await this.geonameStateRepository.createState(createStateDtoToUpper);
         } catch (error) {
             throw new CreateOrUpdateStateException(
-                this.stringFormatter.format(ERROR_MESSAGES.STATE_CREATE_ERROR), stateName)
+                this.stringFormatter.format(ERROR_MESSAGES.STATE_CREATE_ERROR, createStateDtoToUpper.stateName)
+            );
         }
     }
 
     /**
      * @param {number} id
-     * @param {UpdateStateGeonameDto} updateStateDto
+     * @param {CreateOrUpdateStateGeonameDto} createOrUpdateStateDto
      * @return {*}  {Promise<GeonameStateEntity>}
      * @memberof GeonameStateService
      */
-    async updateState(id: number, updateStateDto: UpdateStateGeonameDto): Promise<GeonameStateEntity> {
-        const { stateName, stateAcronym } = updateStateDto;
+    async updateState(id: number, createOrUpdateStateDto: CreateOrUpdateStateGeonameDto): Promise<GeonameStateEntity> {
+        const stateData = await this.findById(id);
 
-        const ifExistsStateName = await this.geonameStateRepository.findByStateName(stateName);
+        const createStateDtoToUpper = await this.transferObjectToDto(createOrUpdateStateDto);
+        stateData.stateName = createStateDtoToUpper.stateName;
+        stateData.stateAcronym = createStateDtoToUpper.stateAcronym;
+
+        const ifExistsStateName = await this.geonameStateRepository.findByStateName(createStateDtoToUpper.stateName);
         if (ifExistsStateName != undefined) {
             if (id !== Number(ifExistsStateName.id)) {
                 throw new StateOrAcronymExistsException(
-                    this.stringFormatter.format(ERROR_MESSAGES.STATE_CONFLICT_EXISTS), stateName
+                    this.stringFormatter.format(ERROR_MESSAGES.STATE_CONFLICT_EXISTS, createStateDtoToUpper.stateName)
                 );
             }
         }
 
-        const ifExistsStateAcronym = await this.geonameStateRepository.findByStateAcronym(stateAcronym);
+        const ifExistsStateAcronym = await this.geonameStateRepository.findByStateAcronym(createStateDtoToUpper.stateAcronym);
         if (ifExistsStateAcronym != undefined) {
-            if (id !== Number(ifExistsStateAcronym.id)) {
+            if (id !== Number(ifExistsStateName.id)) {
                 throw new StateOrAcronymExistsException(
-                    this.stringFormatter.format(ERROR_MESSAGES.ACRONYM_CONFLICT_EXISTS), stateAcronym
+                    this.stringFormatter.format(ERROR_MESSAGES.ACRONYM_CONFLICT_EXISTS, createStateDtoToUpper.stateAcronym)
                 );
             }
         }
 
         try {
-            return await this.geonameStateRepository.updateState(updateStateDto);
+            return await this.geonameStateRepository.updateState(stateData);
         } catch (error) {
             throw new CreateOrUpdateStateException(
-                this.stringFormatter.format(ERROR_MESSAGES.STATE_CREATE_ERROR), stateName)
+                this.stringFormatter.format(ERROR_MESSAGES.STATE_UPDATE_ERROR, createStateDtoToUpper.stateName)
+            );
         }
     }
 
@@ -98,10 +107,62 @@ export class GeonameStateService {
         try {
             return await this.geonameStateRepository.findAll();
         } catch (error) {
-            console.log(error)
             throw new StateFindAllException(
                 ERROR_MESSAGES.STATE_FIND_ALL_ERROR_OCURRED
             );
         }
+    }
+
+    /**
+     * @param {number} id
+     * @return {*}  {Promise<GeonameStateEntity>}
+     * @memberof GeonameStateService
+     */
+    async findById(id: number): Promise<GeonameStateEntity> {
+        const stateData = await this.geonameStateRepository.findById(id);
+
+        if (!stateData) {
+            throw new StateFindByIdNotFounException(
+                this.stringFormatter.format(ERROR_MESSAGES.STATE_FIND_BY_ID_NOT_FOUND, id.toString())
+            );
+        }
+        return stateData;
+    }
+
+    async findByStateName(stateName: string): Promise<GeonameStateEntity> {
+        const stateData = await this.geonameStateRepository.findByStateName(stateName.toUpperCase());
+
+        if (!stateData) {
+            throw new StateFindByNameNotFoundException(
+                this.stringFormatter.format(ERROR_MESSAGES.STATE_FIND_BY_NAME_NOT_FOUND, stateName)
+            );
+        }
+        return stateData;
+    }
+
+    async findByStateAcronym(stateAcronym: string): Promise<GeonameStateEntity> {
+        const stateData = await this.geonameStateRepository.findByStateAcronym(stateAcronym.toUpperCase());
+
+        if (!stateData) {
+            throw new StateFindByAcronymNotFoundException(
+                this.stringFormatter.format(ERROR_MESSAGES.STATE_FIND_BY_ACRONYM_NOT_FOUND, stateAcronym)
+            );
+        }
+        return stateData;
+    }
+
+    /**
+     * @param {(CreateOrUpdateStateGeonameDto)} createOrUpdateStateDto
+     * @return {*}  {Promise<CreateOrUpdateStateGeonameDto>}
+     * @memberof GeonameStateService
+     */
+    async transferObjectToDto(createOrUpdateStateDto: CreateOrUpdateStateGeonameDto): Promise<CreateOrUpdateStateGeonameDto> {
+        const { stateName, stateAcronym } = createOrUpdateStateDto;
+
+        createOrUpdateStateDto = new CreateOrUpdateStateGeonameDto;
+        createOrUpdateStateDto.stateName = stateName.toUpperCase();
+        createOrUpdateStateDto.stateAcronym = stateAcronym.toUpperCase();
+
+        return await createOrUpdateStateDto;
     }
 }
