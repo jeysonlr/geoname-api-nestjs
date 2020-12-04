@@ -1,6 +1,11 @@
 import { HttpStatus } from '@nestjs/common';
 import { HttpInternalMessages } from '../enums';
 
+/**
+ * @author Jeyson Luiz Romualdo
+ * @export
+ * @class ResponseDataDto
+ */
 export class ResponseDataDto {
     constructor(
         protected statusCode: HttpStatus,
@@ -9,21 +14,21 @@ export class ResponseDataDto {
     ) { }
 
     /**
-    * @returns HttpStatus
-    */
+     * @memberof ResponseDataDto
+     */
     public getStatusCode = (): HttpStatus => {
         return this.statusCode;
     }
 
     /**
-     * @returns string
+     * @memberof ResponseDataDto
      */
     public getMessage = (): string => {
         return this.message;
     }
 
     /**
-     * @returns string
+     * @memberof ResponseDataDto
      */
     public getInternalMessage = (): string | HttpInternalMessages => {
         return this.internalMessage;

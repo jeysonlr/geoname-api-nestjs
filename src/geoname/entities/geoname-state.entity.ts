@@ -8,6 +8,11 @@ import {
     CreateDateColumn,
 } from "typeorm";
 
+/**
+ * @author Jeyson Luiz Romualdo
+ * @export
+ * @class GeonameStateEntity
+ */
 @Entity({ name: 'geoname_estados', schema: 'public' })
 @Unique(['stateName', 'stateAcronym'])
 export class GeonameStateEntity {

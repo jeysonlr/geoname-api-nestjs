@@ -1,5 +1,10 @@
 import { IsNotEmpty, Length } from "class-validator";
 
+/**
+ * @author Jeyson Luiz Romualdo
+ * @export
+ * @class CreateStateGeonameDto
+ */
 export class CreateStateGeonameDto {
     @IsNotEmpty()
     stateName: string

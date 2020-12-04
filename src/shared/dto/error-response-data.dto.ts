@@ -3,6 +3,12 @@ import { ResponseDataDto } from '../dto';
 import { HttpStatus } from '@nestjs/common';
 import { HttpInternalMessages } from '../enums';
 
+/**
+ * @author Jeyson Luiz Romualdo
+ * @export
+ * @class ErrorResponseDataDto
+ * @extends {ResponseDataDto}
+ */
 export class ErrorResponseDataDto extends ResponseDataDto {
     private error: RequestError[];
 
@@ -17,7 +23,7 @@ export class ErrorResponseDataDto extends ResponseDataDto {
     }
 
     /**
-     * @returns RequestError[]
+     * @memberof ErrorResponseDataDto
      */
     public getError = (): RequestError[] => {
         return this.error;

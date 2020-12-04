@@ -1,6 +1,11 @@
 import { GeonameStateEntity } from "../entities";
 import { CreateStateGeonameDto, UpdateStateGeonameDto } from "../dto";
 
+/**
+ * @author Jeyson Luiz Romualdo
+ * @export
+ * @interface GeonameStateRepositoryInterface
+ */
 export default interface GeonameStateRepositoryInterface {
     createState(createStateDto: CreateStateGeonameDto): Promise<GeonameStateEntity>;
     updateState(updateStateGeonameDto: UpdateStateGeonameDto): Promise<GeonameStateEntity>;

@@ -10,6 +10,11 @@ import { HttpInternalMessages } from '../enums';
  * @see [Base Exceptions](https://docs.nestjs.com/exception-filters#base-exceptions)
  *
  * @publicApi
+/**
+ * @author Jeyson Luiz Romualdo
+ * @export
+ * @class HttpBaseException
+ * @extends {Error}
  */
 export class HttpBaseException extends Error {
     /**
@@ -45,6 +50,9 @@ export class HttpBaseException extends Error {
         this.initMessage();
     }
 
+    /**
+     * @memberof HttpBaseException
+     */
     public initMessage() {
 
         if (isString(this.response)) {
@@ -61,14 +69,31 @@ export class HttpBaseException extends Error {
         }
     }
 
+    /**
+     * @return {*}  {ErrorResponseDataDto}
+     * @memberof HttpBaseException
+     */
     public getResponse(): ErrorResponseDataDto {
         return this.response;
     }
 
+    /**
+     * @return {*}  {number}
+     * @memberof HttpBaseException
+     */
     public getStatus(): number {
         return this.status;
     }
 
+    /**
+     * @static
+     * @param {(object | string)} objectOrError
+     * @param {string} [message]
+     * @param {(string | HttpInternalMessages)} [internalMessage]
+     * @param {number} [statusCode]
+     * @return {*}
+     * @memberof HttpBaseException
+     */
     public static createBody(
         objectOrError: object | string,
         message?: string,

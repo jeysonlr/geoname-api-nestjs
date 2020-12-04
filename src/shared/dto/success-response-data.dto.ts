@@ -3,6 +3,13 @@ import { HttpStatus } from '@nestjs/common';
 import { HttpInternalMessages } from '../enums';
 import { ResponseDataDto } from './response-data.dto';
 
+/**
+ * @author Jeyson Luiz Romualdo
+ * @export
+ * @class SuccessResponseDataDto
+ * @extends {ResponseDataDto}
+ * @template D
+ */
 export class SuccessResponseDataDto<D> extends ResponseDataDto {
     private data: D[];
 
@@ -17,12 +24,19 @@ export class SuccessResponseDataDto<D> extends ResponseDataDto {
     }
 
     /**
-     * @returns D[]
+     * @memberof SuccessResponseDataDto
      */
     public getData = (): D[] => {
         return this.data;
     }
 
+    /**
+     * @static
+     * @template D
+     * @param {D} objectOrData
+     * @return {*}  {D[]}
+     * @memberof SuccessResponseDataDto
+     */
     public static createData<D>(objectOrData: D): D[] {
         if (!objectOrData) {
             return [];
