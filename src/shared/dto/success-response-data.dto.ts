@@ -1,5 +1,5 @@
-import { HttpStatus } from '@nestjs/common';
 import { isObject, isString } from 'util';
+import { HttpStatus } from '@nestjs/common';
 import { HttpInternalMessages } from '../enums';
 import { ResponseDataDto } from './response-data.dto';
 
@@ -32,8 +32,12 @@ export class SuccessResponseDataDto<D> extends ResponseDataDto {
             return [objectOrData];
         }
 
+        if (isObject(objectOrData)) {
+            return [objectOrData];
+        }
+
         if (isObject(objectOrData) && Array.isArray(objectOrData)) {
-            return objectOrData;
+            return [objectOrData];
         }
 
         return [objectOrData];
