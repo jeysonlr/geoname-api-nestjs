@@ -7,20 +7,18 @@ services:
 #                                                                 #
 ###################################################################
 
-#   api:
-#     image: geoname-api
-#     build: ./.docker
-#     container_name: geoname-api
-#     command: bash -c "yarn run start:dev"
-#     restart: always
-#     volumes:
-#     - .:/var/www/html
-#     working_dir: '/var/www/html'
-#     ports:
-#     - '7001:7001'
-#     depends_on:
-#       - pgsql
-
+  api:
+    image: geoname-api
+    build: ./.docker
+    container_name: geoname-api
+    restart: always
+    volumes:
+    - .:/var/www/html
+    working_dir: '/var/www/html'
+    ports:
+    - '7001:7001'
+    depends_on:
+      - pgsql
 
 # CONTAINER DO BANCO DE DADOS
   pgsql:

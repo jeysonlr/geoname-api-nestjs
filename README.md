@@ -1,8 +1,18 @@
-## Description
+## Descricao
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Installation
+
+## Rodando com Docker
+
+```docker
+$ git config core.autocrlf false
+
+$ docker-compose up -d --build
+
+```
+
+## Rodando localmente
 
 ```bash
 $ git config core.autocrlf false
@@ -10,21 +20,15 @@ $ git config core.autocrlf false
 $ yarn install
 ```
 
-```docker
-
-$ docker-compose up -d --build
-
-```
-
-## sitema gerenciador de banco de dados (SGBD)
+## Acessando sitema gerenciador de banco de dados (SGBD)
 ```
 localhot:8080
 
 utilizar as credencias utilizadas no docker-compose.yml
 
-example:
+exemplo:
 SISTEMA: postgreSQL
-SERVIDOR: pgsql (nome do container)
+SERVIDOR: pgsql (nome do container utilizado no docker-compose.yml)
 USUARIO: (usuario e senha utilizados no docker-compose.yml)
 SENHA: (usuario e senha utilizados no docker-compose.yml)
 BASE DE DADOS: nao precisa informar valor
