@@ -1,9 +1,11 @@
-import { IsNotEmpty, IsNumberString, Length } from "class-validator";
+import { IsNotEmpty, Length } from "class-validator";
+import { GeonameCityEntity } from "./geoname-city.entity";
 import {
     Column,
     Unique,
     Entity,
-    PrimaryColumn,
+    OneToMany,
+    JoinColumn,
     UpdateDateColumn,
     CreateDateColumn,
     PrimaryGeneratedColumn,
@@ -17,12 +19,11 @@ import {
 @Entity({ name: 'geoname_estados', schema: 'public' })
 @Unique(['stateName', 'stateAcronym'])
 export class GeonameStateEntity {
-    @PrimaryGeneratedColumn({ name: 'id', type: 'integer' })
-    id: number;
+    @PrimaryGeneratedColumn({ name: 'stateId', type: 'integer' })
+    stateId: number;
 
     @IsNotEmpty()
     @Column('varchar')
-    @IsNumberString()
     stateName: string;
 
     @Length(2, 2)
@@ -35,4 +36,11 @@ export class GeonameStateEntity {
 
     @UpdateDateColumn({ type: 'timestamp' })
     updateAt: Date;
+
+    @OneToMany(() => GeonameCityEntity, city => city.state)
+    @JoinColumn({
+        name: 'stateId',
+        referencedColumnName: 'stateId'
+    })
+    citys: GeonameCityEntity[];
 }

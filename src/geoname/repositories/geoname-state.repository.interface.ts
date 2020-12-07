@@ -10,7 +10,7 @@ export default interface GeonameStateRepositoryInterface {
     createState(createOrUpdateStateDto: CreateOrUpdateStateGeonameDto): Promise<GeonameStateEntity>;
     updateState(createOrUpdateStateDto: CreateOrUpdateStateGeonameDto): Promise<GeonameStateEntity>;
     findAll(): Promise<GeonameStateEntity[]>;
-    findById(id: number): Promise<GeonameStateEntity | undefined>;
+    findById(stateId: number): Promise<GeonameStateEntity | undefined>;
     findByStateName(stateName: string): Promise<GeonameStateEntity | undefined>;
     findByStateAcronym(stateAcronym: string): Promise<GeonameStateEntity | undefined>;
 }

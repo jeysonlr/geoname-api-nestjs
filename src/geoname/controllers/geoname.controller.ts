@@ -26,10 +26,10 @@ export class GeonameController {
     }
 
     @UsePipes(ValidationPipe)
-    @Get(':id')
+    @Get(':stateId')
     async getById(
-        @Param('id', ParseIntPipe) id: number) {
-        const result = await this.geonameStateService.findById(id);
+        @Param('stateId', ParseIntPipe) stateId: number) {
+        const result = await this.geonameStateService.findById(stateId);
         return new OkResponseDataDto<GeonameStateEntity>(SUCCESS_MESSAGES.GET_SUCCESS, result);
     }
 
@@ -43,11 +43,11 @@ export class GeonameController {
     }
 
     @UsePipes(ValidationPipe)
-    @Put(':id')
+    @Put(':stateId')
     async updateState(
-        @Param('id', ParseIntPipe) id: number,
+        @Param('stateId', ParseIntPipe) stateId: number,
         @Body() data: CreateOrUpdateStateGeonameDto) {
-        const result = await this.geonameStateService.updateState(id, data);
+        const result = await this.geonameStateService.updateState(stateId, data);
         return new CreatedResponseDataDto<CreateOrUpdateStateGeonameDto>(
             SUCCESS_MESSAGES.UPDATE_STATE_SUCCESS, result
         );

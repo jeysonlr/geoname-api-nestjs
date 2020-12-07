@@ -60,13 +60,13 @@ export class GeonameStateService {
     }
 
     /**
-     * @param {number} id
+     * @param {number} stateId
      * @param {CreateOrUpdateStateGeonameDto} createOrUpdateStateDto
      * @return {*}  {Promise<GeonameStateEntity>}
      * @memberof GeonameStateService
      */
-    async updateState(id: number, createOrUpdateStateDto: CreateOrUpdateStateGeonameDto): Promise<GeonameStateEntity> {
-        const stateData = await this.findById(id);
+    async updateState(stateId: number, createOrUpdateStateDto: CreateOrUpdateStateGeonameDto): Promise<GeonameStateEntity> {
+        const stateData = await this.findById(stateId);
 
         const createStateDtoToUpper = await this.transferObjectToDto(createOrUpdateStateDto);
         stateData.stateName = createStateDtoToUpper.stateName;
@@ -74,7 +74,7 @@ export class GeonameStateService {
 
         const ifExistsStateName = await this.geonameStateRepository.findByStateName(createStateDtoToUpper.stateName);
         if (ifExistsStateName != undefined) {
-            if (id !== Number(ifExistsStateName.id)) {
+            if (stateId !== Number(ifExistsStateName.stateId)) {
                 throw new StateOrAcronymExistsException(
                     this.stringFormatter.format(ERROR_MESSAGES.STATE_CONFLICT_EXISTS, createStateDtoToUpper.stateName)
                 );
@@ -83,7 +83,7 @@ export class GeonameStateService {
 
         const ifExistsStateAcronym = await this.geonameStateRepository.findByStateAcronym(createStateDtoToUpper.stateAcronym);
         if (ifExistsStateAcronym != undefined) {
-            if (id !== Number(ifExistsStateName.id)) {
+            if (stateId !== Number(ifExistsStateName.stateId)) {
                 throw new StateOrAcronymExistsException(
                     this.stringFormatter.format(ERROR_MESSAGES.ACRONYM_CONFLICT_EXISTS, createStateDtoToUpper.stateAcronym)
                 );
@@ -114,21 +114,26 @@ export class GeonameStateService {
     }
 
     /**
-     * @param {number} id
+     * @param {number} stateId
      * @return {*}  {Promise<GeonameStateEntity>}
      * @memberof GeonameStateService
      */
-    async findById(id: number): Promise<GeonameStateEntity> {
-        const stateData = await this.geonameStateRepository.findById(id);
+    async findById(stateId: number): Promise<GeonameStateEntity> {
+        const stateData = await this.geonameStateRepository.findById(stateId);
 
         if (!stateData) {
             throw new StateFindByIdNotFounException(
-                this.stringFormatter.format(ERROR_MESSAGES.STATE_FIND_BY_ID_NOT_FOUND, id.toString())
+                this.stringFormatter.format(ERROR_MESSAGES.STATE_FIND_BY_ID_NOT_FOUND, stateId.toString())
             );
         }
         return stateData;
     }
 
+    /**
+     * @param {string} stateName
+     * @return {*}  {Promise<GeonameStateEntity>}
+     * @memberof GeonameStateService
+     */
     async findByStateName(stateName: string): Promise<GeonameStateEntity> {
         const stateData = await this.geonameStateRepository.findByStateName(stateName.toUpperCase());
 
@@ -140,6 +145,11 @@ export class GeonameStateService {
         return stateData;
     }
 
+    /**
+     * @param {string} stateAcronym
+     * @return {*}  {Promise<GeonameStateEntity>}
+     * @memberof GeonameStateService
+     */
     async findByStateAcronym(stateAcronym: string): Promise<GeonameStateEntity> {
         const stateData = await this.geonameStateRepository.findByStateAcronym(stateAcronym.toUpperCase());
 

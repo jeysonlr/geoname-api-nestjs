@@ -52,7 +52,9 @@ export class GeonameStateRepository extends Repository<GeonameStateEntity> imple
      */
     async findAll(): Promise<GeonameStateEntity[]> {
         try {
-            return await this.find();
+            return await this.find(
+                { relations: ['citys'] }
+            );
         } catch (error) {
             throw new StateDatabaseErrorException(ERROR_MESSAGES.STATE_DATABASE_ERROR)
         }
@@ -65,7 +67,10 @@ export class GeonameStateRepository extends Repository<GeonameStateEntity> imple
      */
     async findById(id: number): Promise<GeonameStateEntity | undefined> {
         try {
-            return await this.findOne(id);
+            return await this.findOne(
+                id,
+                { relations: ['citys'] }
+            );
         } catch (error) {
             throw new StateDatabaseErrorException(
                 this.stringFormatter.format(ERROR_MESSAGES.STATE_DATABASE_ERROR, id.toString())
@@ -80,7 +85,10 @@ export class GeonameStateRepository extends Repository<GeonameStateEntity> imple
      */
     async findByStateName(stateName: string): Promise<GeonameStateEntity | undefined> {
         try {
-            return await this.findOne({ stateName: stateName });
+            return await this.findOne(
+                { stateName: stateName },
+                { relations: ['citys'] }
+            );
         } catch (error) {
             throw new StateDatabaseErrorException(
                 this.stringFormatter.format(ERROR_MESSAGES.STATE_DATABASE_ERROR, stateName)
@@ -95,7 +103,10 @@ export class GeonameStateRepository extends Repository<GeonameStateEntity> imple
      */
     async findByStateAcronym(stateAcronym: string): Promise<GeonameStateEntity | undefined> {
         try {
-            return await this.findOne({ stateAcronym: stateAcronym });
+            return await this.findOne(
+                { stateAcronym: stateAcronym },
+                { relations: ['citys'] }
+            );
         } catch (error) {
             throw new StateDatabaseErrorException(
                 this.stringFormatter.format(ERROR_MESSAGES.ACRONYM_DATABASE_ERROR, stateAcronym)
