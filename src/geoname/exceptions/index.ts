@@ -1,3 +1,5 @@
+export * from './city-delete.exception';
+export * from './state-delete.exception';
 export * from './city-database-error.exception';
 export * from './state-database-error.exception';
 export * from './city-exists-to-state.exception';
@@ -9,4 +11,4 @@ export * from './city-find-by-id-not-foun.exception';
 export * from './state-find-by-id-not-found.exception';
 export * from './city-find-by-name-not-found.exception';
 export * from './state-find-by-name-not-found.exception';
-
+export * from './state-find-all-exception'

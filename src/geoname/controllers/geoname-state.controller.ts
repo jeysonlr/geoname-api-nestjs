@@ -3,8 +3,11 @@ import { GeonameStateService } from '../services';
 import { ValidationPipe } from '../../shared/pipes';
 import { CreateOrUpdateStateGeonameDto } from '../dto';
 import { SUCCESS_MESSAGES, ROUTES } from '../constants';
-import { CreatedResponseDataDto, OkResponseDataDto } from '../../shared/dto';
-import { Body, Controller, Get, Param, ParseIntPipe, Post, Put, UsePipes } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, ParseIntPipe, Post, Put, UsePipes } from '@nestjs/common';
+import {
+    OkResponseDataDto,
+    CreatedResponseDataDto,
+} from '../../shared/dto';
 
 /**
  * @author Jeyson Luiz Romualdo
@@ -51,5 +54,11 @@ export class GeonameStateController {
         return new CreatedResponseDataDto<CreateOrUpdateStateGeonameDto>(
             SUCCESS_MESSAGES.UPDATE_STATE_SUCCESS, result
         );
+    }
+
+    @Delete(':stateId')
+    @HttpCode(204)
+    async deleteCity(@Param('stateId', ParseIntPipe) stateId: number) {
+        await this.geonameStateService.deleteState(stateId);
     }
 }

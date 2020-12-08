@@ -4,9 +4,11 @@ import { GeonameCityEntity } from '../entities';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateOrUpdateCityGeonameDto } from '../dto';
 import { GeonameCityRepository } from '../repositories';
+import { GeonameStateService } from './geoname-state.service';
 import { StringFormatterHelper } from './../../shared/helper';
-import { StateFindAllException } from '../exceptions/state-find-all-exception';
 import {
+    CityDeleteException,
+    StateFindAllException,
     CityExistsToStateException,
     CityFindByIdNotFounException,
     CityFindByNameNotFoundException,
@@ -23,7 +25,8 @@ export class GeonameCityService {
     constructor(
         @InjectRepository(GeonameCityRepository, 'databaseConnection')
         private readonly geonameCityRepository: GeonameCityRepository,
-        private readonly stringFormatter: StringFormatterHelper
+        private readonly stringFormatter: StringFormatterHelper,
+        private readonly geonameStateService: GeonameStateService
     ) { }
 
     /**
@@ -32,6 +35,8 @@ export class GeonameCityService {
      * @memberof GeonameCityService
      */
     async createCity(createOrUpdateCityDto: CreateOrUpdateCityGeonameDto): Promise<GeonameCityEntity> {
+        await this.geonameStateService.findById(createOrUpdateCityDto.stateId);
+
         const createCityDtoToUpper = await this.transferObjectToDto(createOrUpdateCityDto);
 
         const existsCity = await this.geonameCityRepository.findByCityName(createCityDtoToUpper.cityName);
@@ -47,7 +52,7 @@ export class GeonameCityService {
             return await this.geonameCityRepository.createCity(createCityDtoToUpper);
         } catch (error) {
             throw new CreateOrUpdateCityException(
-                this.stringFormatter.format(ERROR_MESSAGES.STATE_CREATE_ERROR, createCityDtoToUpper.cityName)
+                this.stringFormatter.format(ERROR_MESSAGES.CITY_CREATE_ERROR, createCityDtoToUpper.cityName)
             );
         }
     }
@@ -81,6 +86,28 @@ export class GeonameCityService {
         } catch (error) {
             throw new CreateOrUpdateCityException(
                 this.stringFormatter.format(ERROR_MESSAGES.CITY_UPDATE_ERROR, createCityDtoToUpper.cityName)
+            );
+        }
+    }
+
+    /**
+     * @param {number} cityId
+     * @return {*}  {Promise<void>}
+     * @memberof GeonameCityService
+     */
+    async deleteCity(cityId: number): Promise<void> {
+        const deleteData = await this.findById(cityId);
+
+        const geonameCity = new GeonameCityEntity;
+        geonameCity.cityId = deleteData.cityId;
+        geonameCity.cityName = deleteData.cityName;
+        geonameCity.stateId = deleteData.stateId;
+
+        try {
+            await this.geonameCityRepository.delete(geonameCity)
+        } catch (error) {
+            throw new CityDeleteException(
+                this.stringFormatter.format(ERROR_MESSAGES.CITY_DELETE_ERROR, cityId.toString())
             );
         }
     }
@@ -121,7 +148,9 @@ export class GeonameCityService {
      * @memberof GeonameCityService
      */
     async findByCityName(cityName: string): Promise<GeonameCityEntity> {
-        const stateData = await this.geonameCityRepository.findByCityName(cityName.toUpperCase());
+        const stateData = await this.geonameCityRepository.findByCityName(
+            cityName.toUpperCase().normalize("NFD").replace(/[^a-zA-Zs]/g, "")
+        );
 
         if (!stateData) {
             throw new CityFindByNameNotFoundException(
@@ -142,7 +171,7 @@ export class GeonameCityService {
         const { cityName, stateId } = createOrUpdateCityDto;
 
         createOrUpdateCityDto = new CreateOrUpdateCityGeonameDto;
-        createOrUpdateCityDto.cityName = cityName.toUpperCase();
+        createOrUpdateCityDto.cityName = cityName.toUpperCase().normalize("NFD").replace(/[^a-zA-Zs]/g, "");
         createOrUpdateCityDto.stateId = stateId;
 
         return await createOrUpdateCityDto;

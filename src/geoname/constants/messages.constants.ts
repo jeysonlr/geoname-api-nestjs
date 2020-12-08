@@ -22,10 +22,16 @@ export const ERROR_MESSAGES = {
     CITY_UPDATE_ERROR: 'Ocorreu um erro ao atualizar a cidade "{}"!',
     CITY_FIND_BY_ID_NOT_FOUND: 'Cidade com id "{}" não encontrado!',
     CITY_FIND_BY_NAME_NOT_FOUND: 'A cidade com nome "{}" não foi encontrada!',
+    CITY_CREATE_ERROR: 'Ocorreu um erro ao criar a cidade "{}"!',
+    CITY_DELETE_ERROR: 'Ocorreu um erro ao deletar a cidade com id "{}"!',
+    CITY_DELETE_DATABASE_ERROR: 'Ocorreu um  erro ao excluir a cidade!',
+    STATE_DELETE_ERROR: 'Ocorreu um  erro ao excluir o estado com id "{}"!',
 };
 
 export const SUCCESS_MESSAGES = {
     GET_SUCCESS: 'Resposta retornada com sucesso!',
     CREATE_STATE_SUCCESS: 'Estado cadastrado com sucesso!',
     UPDATE_STATE_SUCCESS: 'Estado atualizado com sucesso!',
+    CREATE_CITY_SUCCESS: 'Cidade cadastrada com sucesso!',
+    UPDATE_CITY_SUCCESS: 'Cidade atualizada com sucesso!',
 };

@@ -25,6 +25,7 @@ export class GeonameCityEntity {
     cityName: string;
 
     @IsNotEmpty()
+    @Column('integer')
     stateId: number;
 
     @ManyToOne(() => GeonameStateEntity)

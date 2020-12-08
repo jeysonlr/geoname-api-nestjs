@@ -6,14 +6,14 @@ import { CreateOrUpdateStateGeonameDto } from '../dto';
 import { GeonameStateRepository } from '../repositories';
 import { StringFormatterHelper } from './../../shared/helper';
 import {
+    StateDeleteException,
+    StateFindAllException,
     CreateOrUpdateStateException,
     StateFindByIdNotFounException,
     StateOrAcronymExistsException,
     StateFindByNameNotFoundException,
     StateFindByAcronymNotFoundException,
 } from '../exceptions';
-import { StateFindAllException } from '../exceptions/state-find-all-exception';
-import GeonameStateRepositoryInterface from '../repositories/geoname-state.repository.interface';
 
 /**
  * @author Jeyson Luiz Romualdo
@@ -24,7 +24,7 @@ import GeonameStateRepositoryInterface from '../repositories/geoname-state.repos
 export class GeonameStateService {
     constructor(
         @InjectRepository(GeonameStateRepository, 'databaseConnection')
-        private readonly geonameStateRepository: GeonameStateRepositoryInterface,
+        private readonly geonameStateRepository: GeonameStateRepository,
         private readonly stringFormatter: StringFormatterHelper
     ) { }
 
@@ -100,6 +100,27 @@ export class GeonameStateService {
     }
 
     /**
+    * @param {number} stateId
+    * @return {*}  {Promise<void>}
+    * @memberof GeonameStateService
+    */
+    async deleteState(stateId: number): Promise<void> {
+        const deleteData = await this.findById(stateId);
+
+        const geonameState = new GeonameStateEntity;
+        geonameState.stateId = deleteData.stateId;
+        geonameState.stateName = deleteData.stateName;
+
+        try {
+            await this.geonameStateRepository.delete(geonameState)
+        } catch (error) {
+            throw new StateDeleteException(
+                this.stringFormatter.format(ERROR_MESSAGES.STATE_DELETE_ERROR, stateId.toString())
+            );
+        }
+    }
+
+    /**
      * @return {*}  {Promise<GeonameStateEntity[]>}
      * @memberof GeonameStateService
      */
@@ -135,7 +156,9 @@ export class GeonameStateService {
      * @memberof GeonameStateService
      */
     async findByStateName(stateName: string): Promise<GeonameStateEntity> {
-        const stateData = await this.geonameStateRepository.findByStateName(stateName.toUpperCase());
+        const stateData = await this.geonameStateRepository.findByStateName(
+            stateName.toUpperCase().normalize("NFD").replace(/[^a-zA-Zs]/g, "")
+        );
 
         if (!stateData) {
             throw new StateFindByNameNotFoundException(
@@ -151,7 +174,9 @@ export class GeonameStateService {
      * @memberof GeonameStateService
      */
     async findByStateAcronym(stateAcronym: string): Promise<GeonameStateEntity> {
-        const stateData = await this.geonameStateRepository.findByStateAcronym(stateAcronym.toUpperCase());
+        const stateData = await this.geonameStateRepository.findByStateAcronym(
+            stateAcronym.toUpperCase().normalize("NFD").replace(/[^a-zA-Zs]/g, "")
+        );
 
         if (!stateData) {
             throw new StateFindByAcronymNotFoundException(
@@ -170,8 +195,8 @@ export class GeonameStateService {
         const { stateName, stateAcronym } = createOrUpdateStateDto;
 
         createOrUpdateStateDto = new CreateOrUpdateStateGeonameDto;
-        createOrUpdateStateDto.stateName = stateName.toUpperCase();
-        createOrUpdateStateDto.stateAcronym = stateAcronym.toUpperCase();
+        createOrUpdateStateDto.stateName = stateName.toUpperCase().normalize("NFD").replace(/[^a-zA-Zs]/g, "");
+        createOrUpdateStateDto.stateAcronym = stateAcronym.toUpperCase().normalize("NFD").replace(/[^a-zA-Zs]/g, "");
 
         return await createOrUpdateStateDto;
     }

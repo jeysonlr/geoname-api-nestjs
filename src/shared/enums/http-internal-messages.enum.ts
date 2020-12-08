@@ -6,7 +6,7 @@ export enum HttpInternalMessages {
     CREATED = 'Created',
     // ACCEPTED = 202,
     // NON_AUTHORITATIVE_INFORMATION = 203,
-    // NO_CONTENT = 204,
+    NO_CONTENT = "No Content",
     // RESET_CONTENT = 205,
     // PARTIAL_CONTENT = 206,
     // AMBIGUOUS = 300,

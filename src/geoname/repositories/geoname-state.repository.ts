@@ -4,7 +4,6 @@ import { CreateOrUpdateStateGeonameDto } from '../dto';
 import { EntityRepository, Repository } from "typeorm";
 import { StringFormatterHelper } from '../../shared/helper';
 import { StateDatabaseErrorException } from '../exceptions';
-import GeonameStateRepositoryInterface from './geoname-state.repository.interface';
 
 /**
  * @author Jeyson Luiz Romualdo
@@ -13,7 +12,7 @@ import GeonameStateRepositoryInterface from './geoname-state.repository.interfac
  * @extends {Repository<GeonameStateEntity>}
  */
 @EntityRepository(GeonameStateEntity)
-export class GeonameStateRepository extends Repository<GeonameStateEntity> implements GeonameStateRepositoryInterface {
+export class GeonameStateRepository extends Repository<GeonameStateEntity> {
     constructor(
         private readonly stringFormatter: StringFormatterHelper
     ) { super() }
