@@ -35,6 +35,11 @@ BASE DE DADOS: nao precisa informar valor
 
 ```
 
+## Documentacão de rotas da api
+````
+http://localhost:7001/documentation
+```
+
 ## Running the app
 
 ```bash
