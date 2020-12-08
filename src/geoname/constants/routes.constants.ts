@@ -1,3 +1,4 @@
 export const ROUTES = {
-    STATE: 'states'
+    STATE: 'states',
+    CITY: 'citys'
 };

@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { StringFormatterHelper } from './../shared/helper';
-import { GeonameController } from './controllers/geoname.controller';
 import { GeonameCityService, GeonameStateService } from './services';
+import { GeonameCityController, GeonameStateController } from './controllers';
 import { GeonameCityRepository, GeonameStateRepository } from './repositories';
 
 @Module({
@@ -18,7 +18,8 @@ import { GeonameCityRepository, GeonameStateRepository } from './repositories';
         GeonameCityService,
     ],
     controllers: [
-        GeonameController
+        GeonameStateController,
+        GeonameCityController,
     ],
 })
 export class GeonameModule { }

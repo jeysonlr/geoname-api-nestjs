@@ -3,7 +3,7 @@ import { IsNotEmpty, Length } from "class-validator";
 /**
  * @author Jeyson Luiz Romualdo
  * @export
- * @class CreateStateGeonameDto
+ * @class CreateOrUpdateStateGeonameDto
  */
 export class CreateOrUpdateStateGeonameDto {
     @IsNotEmpty()

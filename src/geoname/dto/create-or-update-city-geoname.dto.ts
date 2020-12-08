@@ -1,4 +1,4 @@
-import { IsNotEmpty, Length } from "class-validator";
+import { IsNotEmpty } from "class-validator";
 
 /**
  * @author Jeyson Luiz Romualdo
@@ -10,5 +10,5 @@ export class CreateOrUpdateCityGeonameDto {
     cityName: string
 
     @IsNotEmpty()
-    stateId: string
+    stateId: number
 }

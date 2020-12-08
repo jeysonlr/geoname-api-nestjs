@@ -1,18 +1,18 @@
 import { GeonameStateEntity } from '../entities';
 import { GeonameStateService } from '../services';
-import { ValidationPipe } from './../../shared/pipes';
+import { ValidationPipe } from '../../shared/pipes';
 import { CreateOrUpdateStateGeonameDto } from '../dto';
 import { SUCCESS_MESSAGES, ROUTES } from '../constants';
-import { CreatedResponseDataDto, OkResponseDataDto } from './../../shared/dto';
+import { CreatedResponseDataDto, OkResponseDataDto } from '../../shared/dto';
 import { Body, Controller, Get, Param, ParseIntPipe, Post, Put, UsePipes } from '@nestjs/common';
 
 /**
  * @author Jeyson Luiz Romualdo
  * @export
- * @class GeonameController
+ * @class GeonameStateController
  */
 @Controller(ROUTES.STATE)
-export class GeonameController {
+export class GeonameStateController {
     constructor(
         private readonly geonameStateService: GeonameStateService
     ) { }
