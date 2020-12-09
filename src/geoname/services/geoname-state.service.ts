@@ -195,8 +195,8 @@ export class GeonameStateService {
         const { stateName, stateAcronym } = createOrUpdateStateDto;
 
         createOrUpdateStateDto = new CreateOrUpdateStateGeonameDto;
-        createOrUpdateStateDto.stateName = stateName.toUpperCase().normalize("NFD").replace(/[^a-zA-Zs]/g, "");
-        createOrUpdateStateDto.stateAcronym = stateAcronym.toUpperCase().normalize("NFD").replace(/[^a-zA-Zs]/g, "");
+        createOrUpdateStateDto.stateName = stateName.toUpperCase().normalize("NFD").replace(/[^a-zA-Zs]/g, " ");
+        createOrUpdateStateDto.stateAcronym = stateAcronym.toUpperCase().normalize("NFD").replace(/[^a-zA-Zs]/g, " ");
 
         return await createOrUpdateStateDto;
     }

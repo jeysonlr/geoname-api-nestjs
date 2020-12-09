@@ -1,3 +1,4 @@
+import { ApiTags } from '@nestjs/swagger';
 import { GeonameCityEntity } from '../entities';
 import { GeonameCityService } from '../services';
 import { ValidationPipe } from './../../shared/pipes';
@@ -9,6 +10,7 @@ import {
     CreatedResponseDataDto,
 } from './../../shared/dto';
 
+@ApiTags('Citys')
 @Controller(ROUTES.CITY)
 export class GeonameCityController {
     constructor(

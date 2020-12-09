@@ -1,3 +1,4 @@
+import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty, Length } from "class-validator";
 
 /**
@@ -6,9 +7,11 @@ import { IsNotEmpty, Length } from "class-validator";
  * @class CreateOrUpdateStateGeonameDto
  */
 export class CreateOrUpdateStateGeonameDto {
+    @ApiProperty()
     @IsNotEmpty()
     stateName: string
 
+    @ApiProperty()
     @IsNotEmpty()
     @Length(2, 2)
     stateAcronym: string

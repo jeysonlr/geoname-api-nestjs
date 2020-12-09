@@ -1,3 +1,4 @@
+import { ApiTags } from '@nestjs/swagger';
 import { GeonameStateEntity } from '../entities';
 import { GeonameStateService } from '../services';
 import { ValidationPipe } from '../../shared/pipes';
@@ -14,6 +15,7 @@ import {
  * @export
  * @class GeonameStateController
  */
+@ApiTags('States')
 @Controller(ROUTES.STATE)
 export class GeonameStateController {
     constructor(

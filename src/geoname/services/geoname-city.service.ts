@@ -149,7 +149,7 @@ export class GeonameCityService {
      */
     async findByCityName(cityName: string): Promise<GeonameCityEntity> {
         const stateData = await this.geonameCityRepository.findByCityName(
-            cityName.toUpperCase().normalize("NFD").replace(/[^a-zA-Zs]/g, "")
+            cityName.toUpperCase().normalize("NFD").replace(/[^a-zA-Zs]/g, " ")
         );
 
         if (!stateData) {
@@ -171,7 +171,7 @@ export class GeonameCityService {
         const { cityName, stateId } = createOrUpdateCityDto;
 
         createOrUpdateCityDto = new CreateOrUpdateCityGeonameDto;
-        createOrUpdateCityDto.cityName = cityName.toUpperCase().normalize("NFD").replace(/[^a-zA-Zs]/g, "");
+        createOrUpdateCityDto.cityName = cityName.toUpperCase().normalize("NFD").replace(/[^a-zA-Zs]/g, " ");
         createOrUpdateCityDto.stateId = stateId;
 
         return await createOrUpdateCityDto;

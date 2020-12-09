@@ -18,7 +18,6 @@ async function bootstrap() {
         .setTitle('Project Geoname')
         .setDescription('The API description')
         .setVersion('1.0.0')
-        .addTag('geoname')
         .setContact(
             'Jeyson Luiz Romualdo',
             'https://www.linkedin.com/in/jeyson-luiz-romualdo-86992995',

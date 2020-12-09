@@ -1,4 +1,5 @@
 import { IsNotEmpty } from "class-validator";
+import { ApiProperty } from "@nestjs/swagger";
 
 /**
  * @author Jeyson Luiz Romualdo
@@ -6,9 +7,11 @@ import { IsNotEmpty } from "class-validator";
  * @class CreateOrUpdateCityGeonameDto
  */
 export class CreateOrUpdateCityGeonameDto {
+    @ApiProperty()
     @IsNotEmpty()
     cityName: string
 
+    @ApiProperty()
     @IsNotEmpty()
     stateId: number
 }
