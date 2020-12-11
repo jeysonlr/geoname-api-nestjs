@@ -39,7 +39,7 @@ BASE DE DADOS: nao precisa informar valor
 ```
 Caso nao queira popular de 1 em 1,
 
-Rota para popular ou limpar tabelas de estado e cidade
+Rota para popular ou limpar tabelas de estado e cidade, utilizando api do IBGE ( https://servicodados.ibge.gov.br/api/docs/localidades )
 
 localhost:7001/populateorexclude
 
