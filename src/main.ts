@@ -1,9 +1,10 @@
-import { GeonameModule } from './geoname/geoname.module';
 import { AppModule } from './app.module';
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from './shared/pipes';
+import { GeonameModule } from './geoname/geoname.module';
 import { HttpExceptionFilter } from './shared/exceptions';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { PopulateGeonameModule } from './populate-geoname/populate-geoname.module';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
@@ -24,7 +25,10 @@ async function bootstrap() {
             'jeysonlr@gmail.com')
         .build();
     const document = SwaggerModule.createDocument(app, options, {
-        include: [GeonameModule],
+        include: [
+            GeonameModule,
+            PopulateGeonameModule
+        ],
     });
     SwaggerModule.setup('documentation', app, document);
 

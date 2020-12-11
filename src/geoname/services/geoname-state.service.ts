@@ -157,7 +157,7 @@ export class GeonameStateService {
      */
     async findByStateName(stateName: string): Promise<GeonameStateEntity> {
         const stateData = await this.geonameStateRepository.findByStateName(
-            stateName.toUpperCase().normalize("NFD").replace(/[^a-zA-Zs]/g, "")
+            stateName.toUpperCase().normalize("NFD").replace(/[^a-zA-Z\s]/g, "")
         );
 
         if (!stateData) {
@@ -175,7 +175,7 @@ export class GeonameStateService {
      */
     async findByStateAcronym(stateAcronym: string): Promise<GeonameStateEntity> {
         const stateData = await this.geonameStateRepository.findByStateAcronym(
-            stateAcronym.toUpperCase().normalize("NFD").replace(/[^a-zA-Zs]/g, "")
+            stateAcronym.toUpperCase().normalize("NFD").replace(/[^a-zA-Z\s]/g, "")
         );
 
         if (!stateData) {
@@ -195,8 +195,8 @@ export class GeonameStateService {
         const { stateName, stateAcronym } = createOrUpdateStateDto;
 
         createOrUpdateStateDto = new CreateOrUpdateStateGeonameDto;
-        createOrUpdateStateDto.stateName = stateName.toUpperCase().normalize("NFD").replace(/[^a-zA-Zs]/g, " ");
-        createOrUpdateStateDto.stateAcronym = stateAcronym.toUpperCase().normalize("NFD").replace(/[^a-zA-Zs]/g, " ");
+        createOrUpdateStateDto.stateName = stateName.toUpperCase().normalize("NFD").replace(/[^a-zA-Z\s]/g, "");
+        createOrUpdateStateDto.stateAcronym = stateAcronym.toUpperCase().normalize("NFD").replace(/[^a-zA-Z\s]/g, "");
 
         return await createOrUpdateStateDto;
     }

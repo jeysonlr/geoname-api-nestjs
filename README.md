@@ -35,6 +35,16 @@ BASE DE DADOS: nao precisa informar valor
 
 ```
 
+### BONUS
+```
+Caso nao queira popular de 1 em 1,
+
+Rota para popular ou limpar tabelas de estado e cidade
+
+localhost:7001/populateorexclude
+
+```
+
 ## Documentacão de rotas da api
 ```
 http://localhost:7001/documentation

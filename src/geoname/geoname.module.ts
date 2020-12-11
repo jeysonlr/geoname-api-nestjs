@@ -21,5 +21,9 @@ import { GeonameCityRepository, GeonameStateRepository } from './repositories';
         GeonameStateController,
         GeonameCityController,
     ],
+    exports: [
+        GeonameCityService,
+        GeonameStateService,
+    ],
 })
 export class GeonameModule { }
