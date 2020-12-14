@@ -3,8 +3,8 @@ import { HttpService, Injectable } from '@nestjs/common';
 import { StringFormatterHelper } from './../../shared/helper';
 import { InternalServerErrorException } from 'src/shared/exceptions';
 import { URL_IBGE_STATES, URL_IBGE_CITYS, ERROR_MESSAGES } from '../constants';
-import { GeonameCityService, GeonameStateService } from 'src/geoname/services';
-import { CreateOrUpdateCityGeonameDto, CreateOrUpdateStateGeonameDto } from 'src/geoname/dto';
+import { GeonameCityService, GeonameStateService } from '../../geoname/services';
+import { CreateOrUpdateCityGeonameDto, CreateOrUpdateStateGeonameDto } from '../../geoname/dto';
 import {
     CityExistsToStateException,
     CreateOrUpdateCityException,
@@ -76,7 +76,6 @@ export class PopulateStatesService {
                 return await responseStatesIbgeDto;
             })
             .catch(error => {
-                console.log(error)
                 if (error instanceof StateFindAllException) {
                     throw error;
                 }
@@ -163,4 +162,3 @@ export class PopulateStatesService {
         });
     }
 }
-

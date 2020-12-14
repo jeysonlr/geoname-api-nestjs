@@ -21,7 +21,7 @@ export class DatabaseTypeOrmConfig implements TypeOrmOptionsFactory {
             password: process.env.DB_PASSWORD,
             database: process.env.DB_DATABASE,
             entities: [__dirname + '/../**/entities/*.entity{.ts,.js}'],
-            // synchronize: true,
+            synchronize: true,  // ao rodar a primeira vez deixar essa linha descomentada para criar as tabelas no banco
             autoLoadEntities: true,
         };
     }

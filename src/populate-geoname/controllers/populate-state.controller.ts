@@ -1,8 +1,8 @@
 import { ApiTags } from '@nestjs/swagger';
-import { SUCCESS_MESSAGES } from '../constants';
 import { Controller, Get } from '@nestjs/common';
 import { OkResponseDataDto } from 'src/shared/dto';
 import { PopulateStatesService } from '../services';
+import { ROUTES, SUCCESS_MESSAGES } from '../constants';
 
 /**
  * @author Jeyson Luiz Romualdo
@@ -10,7 +10,7 @@ import { PopulateStatesService } from '../services';
  * @class PopulateStateController
  */
 @ApiTags('Populate or exclude States and Citys')
-@Controller('/populateorexclude')
+@Controller(ROUTES.POPULATE_OR_EXCLUDE)
 export class PopulateStateController {
     constructor(
         private populateStateService: PopulateStatesService
