@@ -7,25 +7,25 @@ services:
 #                                                                 #
 ###################################################################
 
-  api:
-    image: geoname-api
-    build: ./.docker
-    container_name: geoname-api
-    restart: always
-    volumes:
-    - .:/var/www/html
-    working_dir: '/var/www/html'
-    ports:
-    - '7001:7001'
-    depends_on:
-      - pgsql
+#   api:
+#     image: geoname-api
+#     build: ./.docker
+#     container_name: geoname-api
+#     restart: always
+#     volumes:
+#     - .:/var/www/html
+#     working_dir: '/var/www/html'
+#     ports:
+#     - '7001:7001'
+#     depends_on:
+#       - geoname_pgsql
 
 # CONTAINER DO BANCO DE DADOS
-  pgsql:
+  geoname_pgsql:
     image: postgres:alpine
     ports:
       - '5432:5432'
-    container_name: 'pgsql'
+    container_name: 'geoname_pgsql'
     restart: always
     volumes:
       - pg-data:/var/lib/postgresql/data

@@ -73,6 +73,7 @@ export class PopulateStatesService {
                     return await this.getAllCitysByState(resultInsertState.stateId, response.id);
 
                 });
+                await Promise.all(responseStatesIbgeDto)
                 return await responseStatesIbgeDto;
             })
             .catch(error => {
@@ -124,7 +125,7 @@ export class PopulateStatesService {
 
                     return await this.geonameCityService.createCity(createCityDto);
                 });
-
+                await Promise.all(responseCitysIbgeDto)
                 return await responseCitysIbgeDto;
             })
             .catch(error => {
@@ -147,9 +148,10 @@ export class PopulateStatesService {
      * @memberof PopulateStatesService
      */
     async removeRegistersCitys(findAllCitys: any): Promise<void> {
-        await findAllCitys.map(async (response) => {
+        const result = await findAllCitys.map(async (response) => {
             await this.geonameCityService.deleteCity(response.cityId);
         });
+        await Promise.all(result)
     }
 
     /**
@@ -157,8 +159,9 @@ export class PopulateStatesService {
      * @memberof PopulateStatesService
      */
     async removeRegistersStates(findAllStates: any): Promise<void> {
-        await findAllStates.map(async (response) => {
+        const result = await findAllStates.map(async (response) => {
             await this.geonameStateService.deleteState(response.stateId);
         });
+        await Promise.all(result)
     }
 }
